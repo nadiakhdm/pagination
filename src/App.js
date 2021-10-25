@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import Data from "./Data";
 
 function App() {
+  const [post, setPost] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      setLoading(true)
+      const result = await axios.get("https://fakestoreapi.com/users");
+      setLoading(false)
+      setPost(result.data);
+      console.log(result.data);
+    };
+    fetchUser();
+  }, []);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1>TestPagination</h1>
+      {loading?<p>loading...</p>:
+      <Data post={post}/>
+      }
     </div>
   );
 }
-
 export default App;
